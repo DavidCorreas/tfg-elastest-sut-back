@@ -29,15 +29,17 @@ app.use((req, res, next) => {
 
 // Anadir posts a la BD
 app.post('/api/posts', (req, res, next) => {
-    const posts = new Post({
+    const post = new Post({
         title: req.body.title,
         content: req.body.content
     });
-    posts.save();
-    console.log(posts);
-    res.status(201).json({
-        message: 'Post added successfully!'
-    });
+    post.save()
+        .then(createdPost => {
+            res.status(201).json({
+                postId: createdPost._id,
+                message: 'Post added successfully!'
+            });
+        })
 });
 
 // Coger post de la BD
@@ -53,6 +55,7 @@ app.get('/api/posts', (req, res, next) => {
 
 // Borrar Post de la BD
 app.delete('/api/posts/:id', (req, res, next) => {
+    console.log('Deleting post: ' + req.params.id)
     Post.deleteOne({ _id: req.params.id })
         .then( result => {
             console.log(result);
