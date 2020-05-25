@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const Post = require('./models/post');
 
 const app = express();
+
+// Conectar a mongo DB
 mongoose.connect('mongodb+srv://david:D8UNgvlyVFskeMZ8@cluster0-nowfg.mongodb.net/node-angular?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => {
         console.log('Connected to database');
@@ -13,16 +15,19 @@ mongoose.connect('mongodb+srv://david:D8UNgvlyVFskeMZ8@cluster0-nowfg.mongodb.ne
         console.log('Connection failed!');
     });
 
+// Usar parsers para coger informacion de los bodys y url de los mensajes http 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Anadir cabeceras para CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Acces-Control-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     next();
 });
 
+// Anadir posts a la BD
 app.post('/api/posts', (req, res, next) => {
     const posts = new Post({
         title: req.body.title,
@@ -35,6 +40,7 @@ app.post('/api/posts', (req, res, next) => {
     });
 });
 
+// Coger post de la BD
 app.get('/api/posts', (req, res, next) => {
     Post.find()
         .then(documents => {
@@ -45,4 +51,14 @@ app.get('/api/posts', (req, res, next) => {
         });
 });
 
+// Borrar Post de la BD
+app.delete('/api/posts/:id', (req, res, next) => {
+    Post.deleteOne({ _id: req.params.id })
+        .then( result => {
+            console.log(result);
+            res.status(200).json({ message: 'Post deleted!' });
+        })
+});
+
+// Exportar app al server
 module.exports = app;
