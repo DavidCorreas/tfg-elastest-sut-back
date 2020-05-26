@@ -1,11 +1,35 @@
 const express = require('express');
+const multer = require('multer');
 
 const router = express.Router();
 const Post = require('../models/post');
 
+const MIME_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg'
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        const isValid = MIME_TYPE_MAP[file.mimetype]
+        let error = new Error('Invalid mime type');
+        if (isValid) {
+            error = null;
+        }
+        callBack(error, '../backend/images');
+    },
+    filename: (req, file, callBack) => {
+        const name = file.originalname.toLocaleLowerCase().split(' ').join('-');
+        const ext = MIME_TYPE_MAP[file.mimetype];
+        callBack(null, name + '-' + Date.now() + '.' + ext);
+    }
+});
+
+
 
 // Anadir posts a la BD
-router.post('', (req, res, next) => {
+router.post('', multer(storage).single('image'), (req, res, next) => {
     const post = new Post({
         title: req.body.title,
         content: req.body.content
