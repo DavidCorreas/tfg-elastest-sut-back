@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -17,6 +18,7 @@ mongoose.connect('mongodb+srv://david:D8UNgvlyVFskeMZ8@cluster0-nowfg.mongodb.ne
 // Usar parsers para coger informacion de los bodys y url de los mensajes http 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/images', express.static(path.join('images')))
 
 // Anadir cabeceras para CORS
 app.use((req, res, next) => {
