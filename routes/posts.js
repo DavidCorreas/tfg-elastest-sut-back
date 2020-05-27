@@ -46,7 +46,7 @@ router.post('', multer({storage: storage}).single('image'), (req, res, next) => 
         })
 });
 
-// Coger post de la BD
+// Coger todos los posts de la BD
 router.get('', (req, res, next) => {
     Post.find()
         .then(documents => {
@@ -56,12 +56,19 @@ router.get('', (req, res, next) => {
             });
         });
 });
+
 // Actualizar post
-router.put('/:id', (req, res, next) => {
+router.put('/:id', multer({storage: storage}).single('image'), (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if (req.file) {
+        const url = req.protocol + '://' + req.get('host');
+        imagePath = url + '/images/' + req.file.filename;
+    }
     const post = new Post({
         _id: req.body.id,
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        imagePath: imagePath
     })
     Post.updateOne({ _id: req.params.id }, post).then( result => {
         console.log(result);
