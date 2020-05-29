@@ -19,9 +19,9 @@ router.post("/singup", (req, res, next) => {
           result: result,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(500).json({
-          message: err,
+          message: 'Failed when creating user',
         });
       });
   });
@@ -52,8 +52,8 @@ router.post("/login", (req, res, next) => {
         userId: fetchedUser._id
       });
     })
-    .catch((err) => {
-      return res.status(401).json({ message: "Auth failed" });
+    .catch(() => {
+      return res.status(401).json({ message: "Invalid authentication credentials" });
     });
 });
 

@@ -48,6 +48,10 @@ router.post(
         },
         message: "Post added successfully!",
       });
+    }).catch(() => {
+      res.status(500).json({
+        message: 'Creating a post failed!'
+      })
     });
   }
 );
@@ -72,6 +76,9 @@ router.get("", (req, res, next) => {
         posts: fetchedPosts,
         maxPosts: count,
       });
+    })
+    .catch(() => {
+      res.status(500).json({ message: 'Fetching post falied!' })
     });
 });
 
@@ -100,6 +107,8 @@ router.put(
       } else {
         res.status(401).json({ message: 'Not authorized!' })
       }
+    }).catch(() => {
+      res.status(500).json({ message: 'Couldn\'t update post' })
     });
   }
 );
@@ -112,6 +121,9 @@ router.get("/:id", (req, res, next) => {
     } else {
       res.status(404).json({ message: "Post not found!" });
     }
+  })
+  .catch(() => {
+    res.status(500).json({ message: 'Fetching post falied!' })
   });
 });
 
@@ -124,6 +136,9 @@ router.delete("/:id", checkAuth, (req, res, next) => {
     } else {
       res.status(401).json({ message: 'Not authorized!' })
     }
+  })
+  .catch(() => {
+    res.status(500).json({ message: 'Deleting post falied!' })
   });
 });
 
