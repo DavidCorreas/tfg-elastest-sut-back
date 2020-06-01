@@ -10,7 +10,7 @@ const app = express();
 // Conectar a mongo DB
 mongoose
   .connect(
-    "mongodb+srv://david:" + process.env.MONGO_ATLAS_PW + "@cluster0-nowfg.mongodb.net/node-angular?retryWrites=true&w=majority",
+    process.env.MONGO_URL,
     { useCreateIndex: true, useUnifiedTopology: true, useNewUrlParser: true }
   )
   .then(() => {
