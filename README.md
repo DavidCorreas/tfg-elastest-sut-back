@@ -1,4 +1,7 @@
-# Objetivos
+# TFG-ELASTEST-SUT-BACK
+Backend de la aplicación MEAN.
+
+## Objetivos
 En este repositorio se encuentra el backend de la aplicación híbrida 
 hecha con el stack MEAN.
 
@@ -6,7 +9,7 @@ Se trata de un backend hecho con NodeJS y el framework Express. Es el encargado
 de gestionar la lógica de la aplicación y también como intermediario entre el front
 hecho con Angular y la base de datos Mongo.
 
-# Componentes
+## Componentes
 Una vez lleguado una petición al servidor NodeJS, el mensaje se procesa y 
 pasa por una serie de componentes para manejar la lógica de la aplicación.
 
@@ -40,7 +43,7 @@ recibido por el servidor, y procesar el contenido, modificando la base de datos
 si es necesario y devolviendo una respuesta al cliente.
 
 
-# Despliegue
+## Despliegue
 Se ha optado por la tecnología docker para poder desplegar el backend de la aplicación.
 
 ### Despliegue del servidor NodeJS con Express
